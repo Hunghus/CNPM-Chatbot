@@ -12,14 +12,12 @@ PAT = ''
 @app.route('/', methods=['GET'])
 def handle_verification():
   print "Handling Verification."
-  
-  return "ttttttttttttttt"
-  # if request.args.get('hub.verify_token', '') != '12345':
-  #   print "Verification successful!"
-  #   return request.args.get('hub.challenge', '')
-  # else:
-  #   print "Verification failed!"
-  #   return 'Error, wrong validation token'
+  if request.args.get('hub.verify_token', '') != '12345':
+    return "Verification successful!"
+    # return request.args.get('hub.challenge', '')
+  else:
+    print "Verification failed!"
+    return 'Error, wrong validation token'
 
 @app.route('/', methods=['POST'])
 def handle_messages():

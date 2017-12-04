@@ -32,3 +32,8 @@ while True:
     # Press ctrl-c or ctrl-d on the keyboard to exit
     except (KeyboardInterrupt, EOFError, SystemExit):
         break
+
+def process(input="hello"):
+    if input=="hello":
+        return "Cuoc doi van dep sao"
+    return "Đời vẫn đẹp"
