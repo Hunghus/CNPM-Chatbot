@@ -8,12 +8,19 @@ app = Flask(__name__)
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = ''
+token = "EAACwhRBVJUwBAGy5FpUvLkax1pmOs1YWOb8F4KgVaZBSrYGyYmZBz99iPka644ny7RQfQ5rv2ZCbpyQ90nFguMlIt0rJuk31YruYWGK60JCbYBU1EcmNBNZBqU4JRPnY2AKCTLelcbuUGWM3YoO2ZAG4RDyCeZBZBVaWFP1W4lk0QZDZD"
+very_token = "12345"
 
-@app.route('/', methods=['GET'])
+
+@app.route('/')
+def handle_defaule():
+  return "OK"
+
+@app.route('/webhook', methods=['GET'])
 def handle_verification():
   print "Handling Verification."
-  if request.args.get('hub.verify_token', '') != '12345':
-    return "Verification successful!"
+  if request.args.get('hub.verify_token', '') == very_token :
+    return request.args.get('hub.challenge','')
     # return request.args.get('hub.challenge', '')
   else:
     print "Verification failed!"
@@ -50,7 +57,7 @@ def send_message(token, recipient, text):
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": text.decode('unicode_escape')}
+      "message": {"text": "kkkkkkkk"}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
