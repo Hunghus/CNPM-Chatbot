@@ -20,21 +20,20 @@ def handle_defaule():
 def handle_verification():
   print "Handling Verification."
   if request.args.get('hub.verify_token', '') == very_token :
-    return request.args.get('hub.challenge','')
-    # return request.args.get('hub.challenge', '')
+    return request.args.get('hub.challenge',)
   else:
-    print "Verification failed!"
+    # print "Verification failed!"
     return 'Error, wrong validation token'
 
-@app.route('/', methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 def handle_messages():
   print "Handling Messages"
   payload = request.get_data()
   print payload
   for sender, message in messaging_events(payload):
-    print "Incoming from %s: %s" % (sender, message)
-    send_message(PAT, sender, message)
-  return "ok"
+    # print "Incoming from %s: %s" % (sender, message)
+    send_message(token, sender, message)
+  return "OK"
 
 def messaging_events(payload):
   """Generate tuples of (sender_id, message_text) from the
@@ -46,8 +45,9 @@ def messaging_events(payload):
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
     else:
-      yield event["sender"]["id"], "I can't echo this"
-
+      yield event["sender"]["id"], "KKKKKKKKK"
+      #print "La tao"
+      
 
 def send_message(token, recipient, text):
   """Send the message text to recipient with id recipient.
@@ -57,7 +57,7 @@ def send_message(token, recipient, text):
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": "kkkkkkkk"}
+      "message": {"text": text.decode('unicode_escape')}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
@@ -65,3 +65,4 @@ def send_message(token, recipient, text):
 
 if __name__ == '__main__':
   app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
+
